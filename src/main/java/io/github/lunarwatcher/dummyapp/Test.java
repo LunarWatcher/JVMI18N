@@ -17,6 +17,7 @@ class Test {
         translation.addBaseBundle("res/", "base");
         translation.addTranslation("base", "en_US");
         translation.addTranslation("base", "nb_NO");
+        translation.setLocale("ru_RU");
         DefaultFormatter formatter = new DefaultFormatter(translation);
         String unformatted = translation.get("formattable");
         System.out.println("Line needs " + formatter.scanLine(unformatted) + " references");
@@ -25,8 +26,6 @@ class Test {
             String formatted = formatter.formatInput(unformatted, new Object[]{translation.get("something"), i});
             System.out.println(formatted);
         }
-        //translation.getBundle("base").printLocales();
-        translation.addTranslation("thisdoesnotexist", "thisdoesnotexist");
 
     }
 }

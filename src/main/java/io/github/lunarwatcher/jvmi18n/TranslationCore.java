@@ -12,7 +12,7 @@ import java.util.Properties;
  * @since 1.0
  * @author LunarWatcher
  */
-class TranslationCore {
+public class TranslationCore {
     Map<String, Properties> storedProps;
 
     public TranslationCore() {
