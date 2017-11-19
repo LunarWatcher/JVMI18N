@@ -1,5 +1,5 @@
 group 'io.github.lunarwatcher'
-version '1.0'
+version '1.0.0'
 
 buildscript {
     ext.kotlin_version = '1.1.60'
@@ -9,6 +9,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
     }
 }
 
@@ -31,4 +32,11 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
 }
