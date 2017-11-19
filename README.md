@@ -34,4 +34,8 @@ Or whatever names and extensions you need. The translations for a given bundle h
 
 # Setup
 
-Refer the wiki for more details
+Refer the wiki for more details. 
+
+# Current stable version: 1.0.1
+
+Remember to update the dependency to the newest version
