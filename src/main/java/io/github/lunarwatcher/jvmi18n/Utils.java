@@ -2,6 +2,9 @@ package io.github.lunarwatcher.jvmi18n;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author LunarWatcher
+ */
 public class Utils {
 
     /**

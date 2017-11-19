@@ -10,8 +10,14 @@ import java.util.List;
 /**
  * The core of the program! This class contains the actual translation interface, and interfaces
  * with classes such as the TranslationCore and Bundle.
+ * @author LunarWatcher
  */
 public class Translation {
+    /**
+     * if the locale isn't supplied, use this locale. This is final as it can be overridden
+     * by passing a non-null argument to the constructor.
+     */
+    public static final String DEFAULT_LOCALE = "en_US";
     /**
      * The extension to use. Defaults to .i18n
      * Can be changed through static access before loading anything
@@ -42,11 +48,16 @@ public class Translation {
      * Instance of the translation core
      */
     TranslationCore core;
+
+    public Formatter formatter;
+
     /**
      * Creates a new translation object
      * @param locale The locale to use (in String format, equivalent to the name of the translation files)
      */
     public Translation(@Nullable String locale) {
+        if(locale == null)
+            locale = DEFAULT_LOCALE;
         this.locale = locale;
         bundles = new ArrayList<>();
         core = new TranslationCore();
@@ -84,18 +95,6 @@ public class Translation {
             }
         }
         throw new IllegalArgumentException("Base translation not found: " + base);
-    }
-
-    /**
-     * Set whether or not to crash if a key isn't found
-     * @param notFound The new value
-     */
-    public static void setCrashIfNotFound(boolean notFound){
-        CRASH_IF_NOT_FOUND = notFound;
-    }
-
-    public static void setForceFromFile(boolean nv){
-        FORCE_FROM_FILE = nv;
     }
 
     /**
@@ -153,34 +152,6 @@ public class Translation {
     }
 
     /**
-     *
-     * @return the current locale
-     */
-    public String getLocale(){
-        return locale;
-    }
-
-    /**
-     * Set the locale. Affects what file the Strings are grabbed from
-     * @param locale The new locale
-     */
-    public void setLocale(String locale){
-        this.locale = locale;
-    }
-
-    public Bundle getBundle(String name){
-        for(Bundle b : bundles){
-            if(b.getBasename().equals(name))
-                return b;
-        }
-        return null;
-    }
-
-    public List<Bundle> getBundles(){
-        return bundles;
-    }
-
-    /**
      * Add a single bundle to the List of available Bundles
      * @param b the bundle to add
      */
@@ -202,5 +173,53 @@ public class Translation {
         for(Bundle bun : b){
             addBundle(bun);
         }
+    }
+
+    public void setFormatter(Formatter formatter){
+        this.formatter = formatter;
+    }
+
+    public Formatter getFormatter(){
+        return formatter;
+    }
+
+    /**
+     *
+     * @return the current locale
+     */
+    public String getLocale(){
+        return locale;
+    }
+
+    /**
+     * Set whether or not to crash if a key isn't found
+     * @param notFound The new value
+     */
+    public static void setCrashIfNotFound(boolean notFound){
+        CRASH_IF_NOT_FOUND = notFound;
+    }
+
+    public static void setForceFromFile(boolean nv){
+        FORCE_FROM_FILE = nv;
+    }
+
+    /**
+     * Set the locale. Affects what file the Strings are grabbed from
+     * @param locale The new locale
+     */
+    public void setLocale(String locale){
+        this.locale = locale;
+    }
+
+    public Bundle getBundle(String name){
+        for(Bundle b : bundles){
+            if(b.getBasename().equals(name))
+                return b;
+        }
+        return null;
+    }
+
+    public List<Bundle> getBundles(){
+        return bundles;
     }
 }

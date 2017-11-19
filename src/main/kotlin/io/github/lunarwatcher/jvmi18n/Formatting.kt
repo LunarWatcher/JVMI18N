@@ -2,8 +2,10 @@ package io.github.lunarwatcher.jvmi18n
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-
-public abstract class Formatter (var translation: Translation){
+/**
+ * @author LunarWatcher
+ */
+abstract class Formatter (var translation: Translation){
 
     /**
      * How the formatter should format given input. This is abstract to allow for overriding
@@ -13,18 +15,19 @@ public abstract class Formatter (var translation: Translation){
     abstract fun formatInput(line: String, formatData: Array<Any?>) : String;
 
 }
-
-public class DefaultFormatter(translation: Translation) : Formatter(translation){
+/**
+ * @author LunarWatcher
+ */
+class DefaultFormatter(translation: Translation) : Formatter(translation){
     var replacable: Pattern;
-    var config: Pattern;
+
     init{
         replacable = Pattern.compile("(?i)\\$\\[.*?\\]");
-        config = Pattern.compile("\\[.*?\\]")
 
     }
 
     override fun formatInput(line: String, formatData: Array<Any?>) : String {
-        var line = line;
+        var line = line;//Shadowing by intent: force reassign from val to var
         for(o in formatData){
             if(o == null){
                 System.out.println("Null arguments not supported.")
@@ -117,6 +120,7 @@ public class DefaultFormatter(translation: Translation) : Formatter(translation)
                         // If the option hasn't been picked so far, go with the highest
                         // available reference available. It can't be empty, and it has to
                         // be higher than the others.
+                        //TODO This is a terrible call. It assumes it goes in a given order. Tweak to give more flexibility
                         picked = possibilities[possibilities.size - 1];
                     }
                     if (picked.flag == "-e") {
@@ -154,7 +158,10 @@ public class DefaultFormatter(translation: Translation) : Formatter(translation)
         return handleNum(ref, expectedNum, operator);
     }
 
-    public fun handleNum(ref: Double, expected: Double, operator: String) : Boolean{
+    /**
+     * Return whether or not a given operator is applicable to the numbers
+     */
+    fun handleNum(ref: Double, expected: Double, operator: String) : Boolean{
         when(operator){
             ">" ->{
                 return expected > ref;
@@ -177,34 +184,20 @@ public class DefaultFormatter(translation: Translation) : Formatter(translation)
         throw RuntimeException();
     }
 
-    public fun parseArgs(group: String) : String{
+    fun parseArgs(group: String) : String{
         var g = group.replace("$", "");
         g = g.replace("[", "");
         return g.replace("]", "")
 
     }
 
-    companion object {
-        val ARGUMENT_STRING = "string"
-        val ARGUMENT_INTEGER = "int"
-        val ARGUMENT_FLOAT = "float"
-        val ARGUMENT_DOUBLE = "double"
-        val ARGUMENT_NUMBER = "number"
-
-        val GREATER_EQUAL = 0;
-        val SMALLER_EQUAL = 1;
-        val EQUAL = 2;
-        val GREATER = 3;
-        val SMALLER = 4;
-    }
-
     /**
      * Scans a given line and returns the amount of formattable items it has
      */
     fun scanLine(line: String) : Int{
-        var matcher: Matcher = replacable.matcher(line);
+        val matcher: Matcher = replacable.matcher(line);
         var match = matcher.find();
-        var groups = mutableListOf<String>();
+        val groups = mutableListOf<String>();
         while(match){
             groups.add(matcher.group())
             match = matcher.find()
@@ -218,4 +211,15 @@ public class DefaultFormatter(translation: Translation) : Formatter(translation)
      * @param num The connected number
      */
     class Data(var operator: String, var num: String, var case: String, var flag: String = "-d");
+
+
+    companion object {
+        val ARGUMENT_STRING = "string"
+        val ARGUMENT_INTEGER = "int"
+        val ARGUMENT_FLOAT = "float"
+        val ARGUMENT_DOUBLE = "double"
+        val ARGUMENT_NUMBER = "number"
+
+    }
+
 }

@@ -1,15 +1,15 @@
 package io.github.lunarwatcher.jvmi18n
 
-import com.sun.corba.se.impl.orbutil.fsm.NameBase
-import com.sun.javafx.fxml.PropertyNotFoundException
 import java.io.IOException
 import java.util.*
 
 /**
  * The bundle class. Contains all added occurances of a bundle, and contains
  * the path, base name and more.
+ *
+ * @author LunarWatcher
  */
-public class Bundle{
+class Bundle{
     /**
      * The path to the bundle set
      */
@@ -62,7 +62,7 @@ public class Bundle{
      * Add a translation using the String representing locale and an already loaded
      * properties file
      */
-    public fun addTranslation(locale: String, property: Properties){
+    fun addTranslation(locale: String, property: Properties){
         locales.add(locale);
         translations.put(locale, property);
     }
@@ -71,11 +71,11 @@ public class Bundle{
      * Add a single locale. Used for bulk adding without instantly
      * loading the files.
      */
-    public fun addLocale(locale: String){
+    fun addLocale(locale: String){
         locales.add(locale);
     }
 
-    public fun addLocales(locales: Array<String>){
+    fun addLocales(locales: Array<String>){
         for(locale in locales)
             addLocale(locale);
     }
@@ -84,7 +84,7 @@ public class Bundle{
      * Loads the locales that only have been added in String form as instances of Properties.
      * Only adds those that aren't already added
      */
-    public fun loadAll() {
+    fun loadAll() {
 
         for(loc in locales){
             if(loc !in translations.keys){
@@ -104,7 +104,7 @@ public class Bundle{
 
     }
 
-    public fun configTranslation(locale: String){
+    fun configTranslation(locale: String){
         for(l in locales){
             if(l == locale){
                 return;
@@ -117,18 +117,21 @@ public class Bundle{
                         + Translation.EXTENSION));
     }
 
-    public fun getBaseBundle() : Properties{
+    fun getBaseBundle() : Properties{
         return base;
     }
 
-    public fun get(key: String, locale: String): String{
+    fun get(key: String, locale: String): String {
         val prop: String? = translations.get(locale)?.getProperty(key);
-        if(prop == null && Translation.CRASH_IF_NOT_FOUND)
+        if (prop == null && Translation.CRASH_IF_NOT_FOUND && translations.isNotEmpty()){
+            /**
+             * Throws an exception if the property loaded is null, it should crash when a key isn't found (see [Translation.CRASH_IF_NOT_FOUND])
+             * and the translation list doesn't contain anything. If the translation list is empty, assume the usage is for retrieving Strings
+             * from a file and not translations. Because yes, that happens too
+             */
             throw RuntimeException("Property not found: " + key);
-        else if(prop == null){
-            val bProp: String? = base.getProperty(key);
-            if(bProp == null)
-                throw RuntimeException("Property (" + key + ") not found in translation or base bundle (" + basename + ")");
+        }else if(prop == null){
+            val bProp: String = base.getProperty(key) ?: throw RuntimeException("Property (" + key + ") not found in translation or base bundle (" + basename + ")");
             return bProp;
         }
         return prop;
@@ -137,8 +140,8 @@ public class Bundle{
     /**
      * Method mostly used for debug. Prints all the translations available for this bundle.
      */
-    public fun printLocales(){
-        var set = translations.entries;
+    fun printLocales(){
+        val set = translations.entries;
         System.out.println();
         System.out.println("The following translations have been added for the bundle " + basename + ":");
 

@@ -28,8 +28,8 @@ public class TranslationCore {
         }
         Properties properties = new Properties();
         InputStream stream = new FileInputStream(new File(fileName));
-        if(stream == null)
-            throw new FileNotFoundException("File not found!");
+        //Assert that the stream isn't null
+        Utils.assertion(stream != null, "File not found: " + fileName);
         properties.load(stream);
         if(!Translation.FORCE_FROM_FILE)
             storedProps.put(fileName, properties);
