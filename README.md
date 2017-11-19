@@ -8,7 +8,7 @@ In addition, the annoying `Locale` class is completely redundant in this setup. 
 
 The code is designed for memory caching, so if a file is already loaded there's no point in re-loading it. The `TranslationCore` class is behind the core file loading, and contains the stored properties that have been loaded before. The caching can be disabled by setting the boolean `FORCE_FROM_FILE` in the Translation class to true. All of this is documented in the wiki.*
 
-<sub>*Because this is a brand new project, the wiki, license and more is being added. There's a limit to the speed at which it can be added, so not everything may be added yet</sub>
+
 
 ## File structure
 
