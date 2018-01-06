@@ -1,6 +1,6 @@
 <h1><b style="color:red">NOTE!</b></h1>
 
-You're currently on the nightly branch. This contains (most likely) untested new features. 
+You're currently on the nightly branch. This branch contains new features that are (most likely) untested. Use at your own risk. 
 
 The current new feature being added is cross-platform support.
 
