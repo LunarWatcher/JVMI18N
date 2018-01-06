@@ -1,5 +1,0 @@
-appName=SomeName
-defaultConfig=En tilfeldig tekst
-formattable=You often end up finding yourself in the need for formatting in $[string]. This string contains $[int,>1 "occurrences",=0 -e "no occurences",<0 "occurences",=1 "occurence",>=900 -e "some damn ton of occurences",=902 -e "this exact number"] of that
-sample=Whenever you have $[int] references to $[string] there's usually a need for $[int,>0 -e "some references",>12 -e "references",>24 -e "a lot of references"] to something
-something=something

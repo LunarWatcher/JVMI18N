@@ -1,3 +1,0 @@
-defaultConfig=Noe tilfeldig tekst i den norske oversettelsen, som ikke er en del av den grunnleggende oversettelsen
-sample=Når du har $[int] referanser til $[string] er det vanligvis et behov for $[int,>0 -e "noen referanser",>12 -e "referanser",>24 -e "mange referanser"] til noe
-something=noe

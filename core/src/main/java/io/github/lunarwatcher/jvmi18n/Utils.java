@@ -18,4 +18,6 @@ public class Utils {
     public static void assertion(boolean input, @Nullable String message){
         if(!input) throw new RuntimeException("Assertion failed. " + (message == null ? "No info provided" : message));
     }
+
+    
 }
