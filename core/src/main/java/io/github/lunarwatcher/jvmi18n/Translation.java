@@ -45,9 +45,9 @@ public class Translation {
      */
     public List<Bundle> bundles;
     /**
-     * Instance of the translation core
+     * The platform specific loader
      */
-    TranslationCore core;
+    Loader loader;
 
     public Formatter formatter;
 
@@ -55,12 +55,12 @@ public class Translation {
      * Creates a new translation object
      * @param locale The locale to use (in String format, equivalent to the name of the translation files)
      */
-    public Translation(@Nullable String locale) {
+    public Translation(@Nullable String locale, Loader loader) {
         if(locale == null)
             locale = DEFAULT_LOCALE;
         this.locale = locale;
         bundles = new ArrayList<>();
-        core = new TranslationCore();
+        this.loader = loader;
     }
 
     /**

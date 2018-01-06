@@ -23,7 +23,6 @@ class DefaultFormatter(translation: Translation) : Formatter(translation){
 
     init{
         replacable = Pattern.compile("(?i)\\$\\[.*?\\]");
-
     }
 
     override fun formatInput(line: String, formatData: Array<Any?>) : String {
@@ -35,18 +34,18 @@ class DefaultFormatter(translation: Translation) : Formatter(translation){
             }
         }
         var matcher: Matcher = replacable.matcher(line);
-        var refs = scanLine(line);
+        val refs = scanLine(line);
         if(refs == 0){
             println("Cannot format a line with 0 formattable items")
             return line;
         }
-        var groups = mutableListOf<String>();
+        val groups = mutableListOf<String>();
         while(matcher.find()){
             groups.add(matcher.group())
         }
 
         for(i in 0 until refs) {
-            var argument = parseArgs(groups[i])
+            val argument = parseArgs(groups[i])
 
             if(argument == ARGUMENT_STRING){
                 matcher.find(0);
@@ -57,18 +56,15 @@ class DefaultFormatter(translation: Translation) : Formatter(translation){
                     || argument.contains(ARGUMENT_FLOAT)
                     || argument.contains(ARGUMENT_NUMBER)){
                 matcher.find(0);
-                var split = argument.split(",");
-                //val FLAG: String = if(argument.contains(ARGUMENT_DOUBLE)) ARGUMENT_DOUBLE
-                //    else if(argument.contains(ARGUMENT_FLOAT)) ARGUMENT_FLOAT
-                //    else if(argument.contains(ARGUMENT_INTEGER))  ARGUMENT_INTEGER
-                //    else ARGUMENT_NUMBER;
-                var possibilities = mutableListOf<Data>()
+                val split = argument.split(",");
+
+                val possibilities = mutableListOf<Data>()
                 for(inp: String in split){
-                    var inp = inp.toLowerCase()
+                    val inp = inp.toLowerCase()
                     if(inp == ARGUMENT_DOUBLE || inp == ARGUMENT_FLOAT || inp == ARGUMENT_INTEGER || inp == ARGUMENT_NUMBER)
                         continue;
 
-                    var s = inp.split(" ", ignoreCase=true, limit=2)
+                    val s = inp.split(" ", ignoreCase=true, limit=2)
                     var case: String = s[1].replace("\"", "")
                     var op: String = s[0];
                     var num = op;
@@ -180,7 +176,7 @@ class DefaultFormatter(translation: Translation) : Formatter(translation){
             }
 
         }
-        System.out.println("That (\"" + operator + "\") isn't a valid operator...")
+        System.out.println("That (\"$operator\") isn't a valid operator...")
         throw RuntimeException();
     }
 

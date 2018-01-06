@@ -43,6 +43,10 @@ class Bundle{
     var translation: Translation;
 
     constructor(path: String, basename: String, translation: Translation){
+        var basename = basename;
+        if(basename.split(".", limit=2).size == 2){
+            basename = basename.split(".")[0];
+        }
         translations = mutableMapOf<String, Properties>()
         locales = mutableListOf<String>()
         this.path = path;
@@ -50,7 +54,7 @@ class Bundle{
         this.translation = translation;
 
         try{
-            base = translation.core.loadFile(path + basename + Translation.EXTENSION)
+            base = translation.loader.loadFile(path + basename + Translation.EXTENSION)
             if(base == null)
                 throw RuntimeException("Base translation cannot be null!");
         }catch(e: IOException){
@@ -91,12 +95,12 @@ class Bundle{
                 println("Locale not in loaded translations");
                 try{
                     translations.put(loc,
-                            translation.core
+                            translation.loader
                                     .loadFile(path + basename
                                             + "-" + loc
                                             + Translation.EXTENSION));
                 }catch(e: IOException){
-                    println("Failed to load the translation for locale " + loc + " for bundle " + basename);
+                    println("Failed to load the translation for locale $loc for bundle $basename");
                 }
             }
         }
@@ -105,13 +109,10 @@ class Bundle{
     }
 
     fun configTranslation(locale: String){
-        for(l in locales){
-            if(l == locale){
-                return;
-            }
-        }
+        if(locales.firstOrNull { it == locale } != null)
+            return;
         locales.add(locale);
-        translations.put(locale, translation.core
+        translations.put(locale, translation.loader
                 .loadFile(path + basename
                         + "-" + locale
                         + Translation.EXTENSION));
@@ -143,7 +144,7 @@ class Bundle{
     fun printLocales(){
         val set = translations.entries;
         System.out.println();
-        System.out.println("The following translations have been added for the bundle " + basename + ":");
+        System.out.println("The following translations have been added for the bundle $basename:");
 
         for(s in set){
             System.out.println(s.key);

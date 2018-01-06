@@ -1,21 +1,20 @@
-package io.github.lunarwatcher.jvmi18n;
+package io.github.lunarwatcher.jvmi18n.desktop;
 
+import io.github.lunarwatcher.jvmi18n.Loader;
+import io.github.lunarwatcher.jvmi18n.Translation;
+import io.github.lunarwatcher.jvmi18n.Utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
-/**
- * The core of the translator. It's package-private by default to prevent access to it from external sources.
- *
- * @since 1.0
- * @author LunarWatcher
- */
-public class TranslationCore {
-    Map<String, Properties> storedProps;
+public class DesktopLoader implements Loader {
+    private HashMap<String, Properties> storedProps;
 
-    public TranslationCore() {
+    public DesktopLoader() {
         storedProps = new HashMap<>();
     }
 
@@ -27,7 +26,7 @@ public class TranslationCore {
             return storedProps.get(fileName);
         }
         Properties properties = new Properties();
-        InputStream stream = new FileInputStream(new File(fileName));
+        InputStream stream = this.getClass().getResourceAsStream("/" + fileName);
         //Assert that the stream isn't null
         Utils.assertion(stream != null, "File not found: " + fileName);
         properties.load(stream);
