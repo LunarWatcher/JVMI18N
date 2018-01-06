@@ -1,3 +1,9 @@
+<h1><b style="color:red">NOTE!</b></h1>
+
+You're currently on the nightly branch. This contains (most likely) untested new features. 
+
+The current new feature being added is cross-platform support.
+
 # About the project
 
 This project was made in an attempt to improve the internationalization support already offered by Java. Since JVM is supported by multiple programming languages, this project can be used with Java, Kotlin, Scala or [any of the other JVM languages](http://www.oracle.com/technetwork/articles/java/architect-languages-2266279.html). 
